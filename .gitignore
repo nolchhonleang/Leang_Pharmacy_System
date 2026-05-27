@@ -29,5 +29,8 @@ Thumbs.db
 *.log
 logs/
 
+# Database
+data/*.db
+
 # Git
 .git/
