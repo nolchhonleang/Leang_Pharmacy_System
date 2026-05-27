@@ -1,0 +1,69 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/app-layout :: layout(~{::main})}">
+<body>
+<th:block th:fragment="main">
+<div class="page-header">
+  <div><h1>Medicines</h1><p class="lead">Product catalog, pricing, and stock levels</p></div>
+  <a class="btn btn-primary-brand" href="/medicines/new"><i class="bi bi-plus-lg me-1"></i> Add medicine</a>
+</div>
+
+<div class="panel mb-3"><div class="panel-body">
+  <form class="row g-2 align-items-end" method="get" action="/medicines">
+    <div class="col-md-6">
+      <label class="form-label">Search</label>
+      <div class="input-group search-bar">
+        <span class="input-group-text"><i class="bi bi-search"></i></span>
+        <input name="q" class="form-control" th:value="${q}" placeholder="Name or SKU..."/>
+      </div>
+    </div>
+    <div class="col-auto"><button type="submit" class="btn btn-primary-brand">Search</button></div>
+    <div class="col-auto" th:if="${q != null and !#strings.isEmpty(q)}">
+      <a href="/medicines" class="btn btn-outline-secondary">Clear</a>
+    </div>
+  </form>
+</div></div>
+<div class="panel">
+  <div class="panel-body p-0 table-responsive">
+    <table class="table table-hover mb-0">
+      <thead><tr><th>SKU</th><th>Name</th><th>Category</th><th>Price</th><th>Stock</th><th>Rx</th><th></th></tr></thead>
+      <tbody>
+        <tr th:each="m : ${medicines}">
+          <td><code th:text="${m.sku}"></code></td>
+          <td class="fw-semibold" th:text="${m.name}"></td>
+          <td th:text="${m.category != null ? m.category.name : '—'}"></td>
+          <td th:text="|$${#numbers.formatDecimal(m.unitPrice,1,2)}|"></td>
+          <td>
+            <span th:class="${lowMap[m.id]} ? 'badge badge-pill badge-stock-low' : 'badge badge-pill badge-stock-ok'"
+                  th:text="${stockMap[m.id] != null ? stockMap[m.id] : 0}">0</span>
+          </td>
+          <td><span th:if="${m.requiresPrescription}" class="badge badge-pill badge-rx">Rx</span></td>
+          <td class="text-end text-nowrap">
+            <a th:href="@{/medicines/{id}/edit(id=${m.id})}" class="btn btn-sm btn-outline-primary">Edit</a>
+            <form th:action="@{/medicines/{id}/delete(id=${m.id})}" method="post" class="d-inline" onsubmit="return confirm('Deactivate this medicine?');">
+              <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+              <button type="submit" class="btn btn-sm btn-outline-danger">Deactivate</button>
+            </form>
+          </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(medicines)}">
+          <td colspan="7" class="empty-state"><i class="bi bi-inbox d-block"></i>No medicines found</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<nav th:if="${page != null and page.totalPages > 1}" class="mt-3" aria-label="Pagination">
+  <ul class="pagination pagination-sm justify-content-center mb-0">
+    <li class="page-item" th:classappend="${!page.hasPrev} ? 'disabled'">
+      <a class="page-link" th:href="@{/medicines(page=${page.prev}, q=${q})}">Previous</a>
+    </li>
+    <li class="page-item disabled"><span class="page-link" th:text="${'Page ' + (page.number + 1) + ' of ' + page.totalPages}"></span></li>
+    <li class="page-item" th:classappend="${!page.hasNext} ? 'disabled'">
+      <a class="page-link" th:href="@{/medicines(page=${page.next}, q=${q})}">Next</a>
+    </li>
+  </ul>
+</nav>
+
+</th:block>
+</body>
+</html>

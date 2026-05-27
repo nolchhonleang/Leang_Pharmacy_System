@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/app-layout :: layout(~{::main})}">
+<body>
+<th:block th:fragment="main">
+<div class="page-header">
+  <div><h1>Receive stock</h1><p class="lead">Add a new inventory batch</p></div>
+  
+</div>
+
+<div class="panel"><div class="panel-body">
+<form method="post" th:action="@{/stock/add}">
+  <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+  <div class="row g-3">
+    <div class="col-md-6"><label class="form-label">Medicine</label>
+      <select name="medicineId" class="form-select" required>
+        <option th:each="m : ${medicines}" th:value="${m.id}" th:text="${m.name + ' (' + m.sku + ')'}"></option>
+      </select>
+    </div>
+    <div class="col-md-6"><label class="form-label">Supplier (optional)</label>
+      <select name="supplierId" class="form-select">
+        <option value="">— None —</option>
+        <option th:each="s : ${suppliers}" th:value="${s.id}" th:text="${s.name}"></option>
+      </select>
+    </div>
+    <div class="col-md-4"><label class="form-label">Batch number</label><input name="batchNumber" class="form-control" required/></div>
+    <div class="col-md-4"><label class="form-label">Quantity</label><input name="quantity" type="number" min="1" class="form-control" required/></div>
+    <div class="col-md-4"><label class="form-label">Expiry date</label><input name="expiryDate" type="date" class="form-control" required/></div>
+  </div>
+  <button type="submit" class="btn btn-primary-brand mt-3">Add batch</button>
+  <a href="/stock" class="btn btn-outline-secondary mt-3">Cancel</a>
+</form>
+</div></div>
+
+</th:block>
+</body>
+</html>

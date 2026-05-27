@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/app-layout :: layout(~{::main})}">
+<body>
+<th:block th:fragment="main">
+<div class="page-header">
+  <div><h1>New purchase order</h1><p class="lead">Create an order for a supplier</p></div>
+  
+</div>
+
+<div class="panel"><div class="panel-body">
+<form method="post" th:action="@{/purchases/create}">
+  <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+  <div class="row g-3">
+    <div class="col-md-6"><label class="form-label">Supplier</label>
+      <select name="supplierId" class="form-select" required>
+        <option th:each="s : ${suppliers}" th:value="${s.id}" th:text="${s.name}"></option>
+      </select>
+    </div>
+    <div class="col-md-6"><label class="form-label">Expected delivery</label><input name="expectedDate" type="date" class="form-control"/></div>
+  </div>
+  <button type="submit" class="btn btn-primary-brand mt-3">Create order</button>
+</form>
+</div></div>
+
+</th:block>
+</body>
+</html>

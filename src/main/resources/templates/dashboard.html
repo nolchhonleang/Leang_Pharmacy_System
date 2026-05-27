@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/app-layout :: layout(~{::main})}">
+<body>
+<th:block th:fragment="main">
+<div class="page-header">
+  <div><h1>Dashboard</h1><p class="lead">Operations at a glance</p></div>
+  <a class="btn btn-primary-brand" href="/pos"><i class="bi bi-cart-plus me-1"></i> New Sale</a>
+</div>
+
+<div class="stat-grid">
+  <div class="stat-tile"><div class="icon-wrap teal"><i class="bi bi-capsule"></i></div><div><div class="label">Medicines</div><div class="value" th:text="${stats.medicineCount}">0</div></div></div>
+  <div class="stat-tile"><div class="icon-wrap red"><i class="bi bi-exclamation-triangle"></i></div><div><div class="label">Low Stock</div><div class="value" th:text="${stats.lowStockCount}">0</div></div></div>
+  <div class="stat-tile"><div class="icon-wrap amber"><i class="bi bi-calendar-x"></i></div><div><div class="label">Expiring Soon</div><div class="value" th:text="${stats.expiringSoonCount}">0</div></div></div>
+  <div class="stat-tile"><div class="icon-wrap teal"><i class="bi bi-file-medical"></i></div><div><div class="label">Pending Rx</div><div class="value" th:text="${stats.pendingPrescriptions}">0</div></div></div>
+  <div class="stat-tile"><div class="icon-wrap green"><i class="bi bi-currency-dollar"></i></div><div><div class="label">Today Sales</div><div class="value" th:text="${#numbers.formatDecimal(stats.todaySales,1,2)}">0</div></div></div>
+  <div class="stat-tile"><div class="icon-wrap green"><i class="bi bi-graph-up"></i></div><div><div class="label">Month Sales</div><div class="value" th:text="${#numbers.formatDecimal(stats.monthSales,1,2)}">0</div></div></div>
+</div>
+<div class="row g-3">
+  <div class="col-lg-6">
+    <div class="panel">
+      <div class="panel-header"><h2>Low stock alerts</h2><a href="/stock" class="btn btn-sm btn-outline-secondary">View stock</a></div>
+      <div class="panel-body p-0 table-responsive">
+        <table class="table mb-0">
+          <thead><tr><th>SKU</th><th>Product</th><th>Qty</th></tr></thead>
+          <tbody>
+            <tr th:each="s : ${lowStock}">
+              <td><code th:text="${s.sku}"></code></td>
+              <td th:text="${s.name}"></td>
+              <td><span class="badge badge-pill badge-stock-low" th:text="${s.totalStock}"></span></td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(lowStock)}"><td colspan="3" class="text-muted text-center py-4">All stock levels healthy</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="panel">
+      <div class="panel-header"><h2>Recent sales</h2><a href="/pos/history" class="btn btn-sm btn-outline-secondary">Full history</a></div>
+      <div class="panel-body p-0 table-responsive">
+        <table class="table mb-0">
+          <thead><tr><th>Invoice</th><th>Total</th><th>When</th></tr></thead>
+          <tbody>
+            <tr th:each="sale : ${recentSales}">
+              <td class="fw-semibold" th:text="${sale.invoiceNumber}"></td>
+              <td th:text="|$${#numbers.formatDecimal(sale.total,1,2)}|"></td>
+              <td class="text-muted" th:text="${#temporals.format(sale.soldAt,'MMM dd, HH:mm')}"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="panel mt-3" th:if="${not #lists.isEmpty(expiring)}">
+  <div class="panel-header"><h2 class="text-warning mb-0"><i class="bi bi-calendar-x me-1"></i> Expiring batches</h2></div>
+  <div class="panel-body p-0 table-responsive">
+    <table class="table mb-0 table-sm">
+      <thead><tr><th>Product</th><th>Expiry</th><th>Qty</th></tr></thead>
+      <tbody>
+        <tr th:each="b : ${expiring}">
+          <td th:text="${b.medicine.name}"></td>
+          <td th:text="${b.expiryDate}"></td>
+          <td th:text="${b.quantity}"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+</th:block>
+</body>
+</html>

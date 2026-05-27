@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/app-layout :: layout(~{::main})}">
+<body>
+<th:block th:fragment="main">
+<div class="page-header">
+  <div><h1>New prescription</h1><p class="lead">Record a prescription for a patient</p></div>
+  
+</div>
+
+<div class="panel"><div class="panel-body">
+<form method="post" th:action="@{/prescriptions/save}" id="rxForm">
+  <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+  <div class="row g-3">
+    <div class="col-md-6"><label class="form-label">Patient</label>
+      <select name="customerId" class="form-select" required>
+        <option th:each="c : ${customers}" th:value="${c.id}" th:text="${c.fullName}"></option>
+      </select>
+    </div>
+    <div class="col-md-6"><label class="form-label">Doctor</label><input name="doctorName" class="form-control" required/></div>
+    <div class="col-md-6"><label class="form-label">Prescribed date</label><input name="prescribedDate" type="date" class="form-control" required/></div>
+    <div class="col-12"><label class="form-label">Notes</label><textarea name="notes" class="form-control" rows="2"></textarea></div>
+  </div>
+  <hr class="my-4"/>
+  <h3 class="h6 fw-bold mb-3">Line items</h3>
+  <div id="rxLines">
+    <div class="row g-2 mb-2 rx-line">
+      <div class="col-md-8"><select name="medicineId" class="form-select"><option th:each="m : ${medicines}" th:value="${m.id}" th:text="${m.name}"></option></select></div>
+      <div class="col-md-3"><input name="quantity" type="number" min="1" value="1" class="form-control" placeholder="Qty"/></div>
+      <div class="col-md-1"><button type="button" class="btn btn-outline-danger w-100 remove-line" title="Remove"><i class="bi bi-trash"></i></button></div>
+    </div>
+  </div>
+  <button type="button" class="btn btn-outline-secondary btn-sm" id="addRxLine"><i class="bi bi-plus"></i> Add line</button>
+  <button type="submit" class="btn btn-primary-brand mt-3 d-block">Save prescription</button>
+</form>
+</div></div>
+
+</th:block>
+</body>
+</html>

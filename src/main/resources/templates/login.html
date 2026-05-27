@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title th:text="'Sign In | ' + ${appName}">Sign In | Leang-Pharmacy-System</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+  <link th:href="@{/css/app.css}" rel="stylesheet"/>
+</head>
+<body class="login-page">
+  <section class="login-hero">
+    <div class="hero-bg" aria-hidden="true">
+      <span class="blob blob-1"></span>
+      <span class="blob blob-2"></span>
+      <span class="blob blob-3"></span>
+      <span class="hero-grid"></span>
+    </div>
+    <div class="hero-content animate-fade-in">
+      <div class="hero-badge"><i class="bi bi-heart-pulse"></i> Trusted care</div>
+      <h1>Care starts here.</h1>
+      <p>Professional pharmacy management ? inventory, prescriptions, point of sale, and compliance in one secure platform.</p>
+      <ul class="features">
+        <li class="animate-fade-in" style="animation-delay:.15s"><i class="bi bi-shield-check"></i> Role-based security and audit trail</li>
+        <li class="animate-fade-in" style="animation-delay:.25s"><i class="bi bi-boxes"></i> Batch stock and expiry tracking</li>
+        <li class="animate-fade-in" style="animation-delay:.35s"><i class="bi bi-receipt"></i> Fast POS and sales reporting</li>
+      </ul>
+      <div class="hero-stats animate-fade-in" style="animation-delay:.45s">
+        <div class="hero-stat"><strong>24/7</strong><span>Operations</span></div>
+        <div class="hero-stat"><strong>FIFO</strong><span>Stock control</span></div>
+        <div class="hero-stat"><strong>Rx</strong><span>Prescriptions</span></div>
+      </div>
+    </div>
+  </section>
+  <section class="login-panel">
+    <div class="login-card animate-scale-in">
+      <div class="logo-icon logo-pulse"><i class="bi bi-capsule-pill"></i></div>
+      <h2 class="text-center h4 fw-bold mb-1">Welcome back</h2>
+      <p class="text-center text-muted mb-4" th:text="'Sign in to ' + ${appName}">Sign in to Leang-Pharmacy-System</p>
+      <div th:if="${error}" class="alert alert-danger py-2 animate-shake" th:text="${error}"></div>
+      <div th:if="${message}" class="alert alert-success py-2" th:text="${message}"></div>
+      <form th:action="@{/login}" method="post">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        <div class="mb-3">
+          <label class="form-label">Username</label>
+          <div class="input-group input-glow">
+            <span class="input-group-text"><i class="bi bi-person"></i></span>
+            <input type="text" name="username" class="form-control" placeholder="admin" required autofocus/>
+          </div>
+        </div>
+        <div class="mb-4">
+          <label class="form-label">Password</label>
+          <div class="input-group input-glow">
+            <span class="input-group-text"><i class="bi bi-lock"></i></span>
+            <input type="password" name="password" class="form-control" placeholder="Your password" required/>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary-brand w-100 py-2 btn-glow">
+          <span>Sign in</span><i class="bi bi-arrow-right ms-1"></i>
+        </button>
+      </form>
+      <p class="text-center text-muted small mt-4 mb-0">Demo: <kbd>admin</kbd> / <kbd>admin123</kbd></p>
+    </div>
+  </section>
+  <script th:src="@{/js/app.js}"></script>
+</body>
+</html>

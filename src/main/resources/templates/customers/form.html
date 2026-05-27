@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/app-layout :: layout(~{::main})}">
+<body>
+<th:block th:fragment="main">
+<div class="page-header">
+  <div><h1>Add customer</h1><p class="lead">Register a new customer</p></div>
+  
+</div>
+
+<div class="panel"><div class="panel-body">
+<form method="post" th:action="@{/customers/save}" th:object="${customer}">
+  <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+  <div class="row g-3">
+    <div class="col-md-6"><label class="form-label">Full name</label><input class="form-control" th:field="*{fullName}" required/></div>
+    <div class="col-md-6"><label class="form-label">Phone</label><input class="form-control" th:field="*{phone}"/></div>
+    <div class="col-md-6"><label class="form-label">Email</label><input type="email" class="form-control" th:field="*{email}"/></div>
+    <div class="col-12"><label class="form-label">Address</label><input class="form-control" th:field="*{address}"/></div>
+    <div class="col-12"><label class="form-label">Allergies</label><textarea class="form-control" th:field="*{allergies}" rows="2"></textarea></div>
+  </div>
+  <button type="submit" class="btn btn-primary-brand mt-3">Save customer</button>
+  <a href="/customers" class="btn btn-outline-secondary mt-3">Cancel</a>
+</form>
+</div></div>
+
+</th:block>
+</body>
+</html>

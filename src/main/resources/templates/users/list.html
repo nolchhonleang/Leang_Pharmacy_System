@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/app-layout :: layout(~{::main})}">
+<body>
+<th:block th:fragment="main">
+<div class="page-header">
+  <div><h1>Users</h1><p class="lead">Staff accounts and roles</p></div>
+  <a class="btn btn-primary-brand" href="/users/new"><i class="bi bi-plus-lg me-1"></i> Add user</a>
+</div>
+
+<div class="panel">
+  <div class="panel-body p-0 table-responsive">
+    <table class="table table-hover mb-0">
+      <thead><tr><th>Username</th><th>Name</th><th>Role</th><th>Active</th><th></th></tr></thead>
+      <tbody>
+        <tr th:each="u : ${users}">
+          <td><code th:text="${u.username}"></code></td>
+          <td th:text="${u.fullName}"></td>
+          <td th:text="${#strings.replace(u.role.name(), 'ROLE_', '')}"></td>
+          <td><span th:class="${u.active ? 'badge badge-pill badge-stock-ok' : 'badge badge-pill badge-stock-low'}" th:text="${u.active ? 'Yes' : 'No'}"></span></td>
+          <td class="text-end"><a th:href="@{/users/{id}/edit(id=${u.id})}" class="btn btn-sm btn-outline-primary">Edit</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+</th:block>
+</body>
+</html>

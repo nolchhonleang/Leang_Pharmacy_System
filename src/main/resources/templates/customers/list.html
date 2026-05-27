@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/app-layout :: layout(~{::main})}">
+<body>
+<th:block th:fragment="main">
+<div class="page-header">
+  <div><h1>Customers</h1><p class="lead">Patient and customer records</p></div>
+  <a class="btn btn-primary-brand" href="/customers/new"><i class="bi bi-plus-lg me-1"></i> Add customer</a>
+</div>
+
+<div class="panel mb-3"><div class="panel-body">
+  <form class="row g-2 align-items-end" method="get" action="/customers">
+    <div class="col-md-6"><label class="form-label">Search by name</label>
+      <div class="input-group search-bar"><span class="input-group-text"><i class="bi bi-search"></i></span>
+      <input name="q" class="form-control" th:value="${q}" placeholder="Customer name..."/></div></div>
+    <div class="col-auto"><button class="btn btn-primary-brand">Search</button></div>
+  </form>
+</div></div>
+<div class="panel">
+  <div class="panel-body p-0 table-responsive">
+    <table class="table table-hover mb-0">
+      <thead><tr><th>Name</th><th>Phone</th><th>Email</th><th>Allergies</th></tr></thead>
+      <tbody>
+        <tr th:each="c : ${customers}">
+          <td class="fw-semibold" th:text="${c.fullName}"></td>
+          <td th:text="${c.phone != null ? c.phone : '—'}"></td>
+          <td th:text="${c.email != null ? c.email : '—'}"></td>
+          <td th:text="${c.allergies != null ? c.allergies : '—'}"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+</th:block>
+</body>
+</html>

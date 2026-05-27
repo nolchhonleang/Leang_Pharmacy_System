@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/app-layout :: layout(~{::main})}">
+<body>
+<th:block th:fragment="main">
+<div class="page-header">
+  <div><h1>Purchase orders</h1><p class="lead">Supplier orders and receiving</p></div>
+  <a class="btn btn-primary-brand" href="/purchases/new"><i class="bi bi-plus-lg me-1"></i> New order</a>
+</div>
+
+<div class="panel">
+  <div class="panel-body p-0 table-responsive">
+    <table class="table table-hover mb-0">
+      <thead><tr><th>PO #</th><th>Supplier</th><th>Status</th><th>Total</th><th>Expected</th><th></th></tr></thead>
+      <tbody>
+        <tr th:each="po : ${orders}">
+          <td class="fw-semibold" th:text="${po.orderNumber}"></td>
+          <td th:text="${po.supplier.name}"></td>
+          <td><span class="badge bg-light text-dark" th:text="${po.status}"></span></td>
+          <td th:text="${po.totalAmount != null ? '$' + #numbers.formatDecimal(po.totalAmount,1,2) : '—'}"></td>
+          <td th:text="${po.expectedDate != null ? po.expectedDate : '—'}"></td>
+          <td class="text-end"><a th:href="@{/purchases/{id}(id=${po.id})}" class="btn btn-sm btn-outline-primary">Open</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+</th:block>
+</body>
+</html>

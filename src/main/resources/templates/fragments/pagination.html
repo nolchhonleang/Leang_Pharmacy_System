@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<nav th:fragment="pager(page, baseUrl)" th:if="${page != null and page.totalPages > 1}" class="mt-3" aria-label="Pagination">
+  <ul class="pagination pagination-sm justify-content-center mb-0">
+    <li class="page-item" th:classappend="${!page.hasPrev} ? 'disabled'">
+      <a class="page-link" th:href="@{${baseUrl}(page=${page.prev})}">Previous</a>
+    </li>
+    <li class="page-item disabled">
+      <span class="page-link" th:text="${'Page ' + (page.number + 1) + ' of ' + page.totalPages}">Page</span>
+    </li>
+    <li class="page-item" th:classappend="${!page.hasNext} ? 'disabled'">
+      <a class="page-link" th:href="@{${baseUrl}(page=${page.next})}">Next</a>
+    </li>
+  </ul>
+  <p class="text-center text-muted small mt-2 mb-0" th:text="${page.totalElements + ' total records'}"></p>
+</nav>
+</body>
+</html>

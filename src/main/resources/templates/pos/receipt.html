@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/app-layout :: layout(~{::main})}">
+<body>
+<th:block th:fragment="main">
+<div class="page-header">
+  <div>
+    <h1>Receipt</h1>
+    <p class="lead" th:text="${sale.invoiceNumber}">INV-00000000</p>
+  </div>
+  <div class="d-flex gap-2">
+    <button type="button" class="btn btn-outline-secondary" onclick="window.print()"><i class="bi bi-printer me-1"></i> Print</button>
+    <a href="/pos" class="btn btn-primary-brand">New sale</a>
+  </div>
+</div>
+
+<div class="panel receipt-panel" style="max-width:520px">
+  <div class="panel-body">
+    <p class="text-center mb-1 fw-bold" th:text="${appName}">Leang-Pharmacy-System</p>
+    <p class="text-center text-muted small mb-3" th:text="${#temporals.format(sale.soldAt,'MMM dd, yyyy HH:mm')}">Date</p>
+    <hr/>
+    <p class="small mb-2"><strong>Customer:</strong> <span th:text="${sale.customer != null ? sale.customer.fullName : 'Walk-in'}">Walk-in</span></p>
+    <p class="small mb-3"><strong>Payment:</strong> <span th:text="${sale.paymentMethod}">CASH</span></p>
+    <table class="table table-sm mb-3">
+      <thead><tr><th>Item</th><th class="text-center">Qty</th><th class="text-end">Total</th></tr></thead>
+      <tbody>
+        <tr th:each="item : ${sale.items}">
+          <td th:text="${item.medicine.name}">Product</td>
+          <td class="text-center" th:text="${item.quantity}">1</td>
+          <td class="text-end" th:text="|$${#numbers.formatDecimal(item.lineTotal,1,2)}|">$0</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="d-flex justify-content-between small"><span>Subtotal</span><span th:text="|$${#numbers.formatDecimal(sale.subtotal,1,2)}|"></span></div>
+    <div class="d-flex justify-content-between small"><span>Discount</span><span th:text="|$${#numbers.formatDecimal(sale.discount,1,2)}|"></span></div>
+    <div class="d-flex justify-content-between fw-bold fs-5 mt-2"><span>Total</span><span th:text="|$${#numbers.formatDecimal(sale.total,1,2)}|"></span></div>
+    <p class="text-center text-muted small mt-4 mb-0">Thank you for your purchase</p>
+  </div>
+</div>
+</th:block>
+</body>
+</html>

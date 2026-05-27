@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/app-layout :: layout(~{::main})}">
+<body>
+<th:block th:fragment="main">
+<div class="page-header">
+  <div><h1>Reports</h1><p class="lead">Sales and inventory insights</p></div>
+  
+</div>
+
+<div class="stat-grid">
+  <div class="stat-tile"><div class="icon-wrap green"><i class="bi bi-currency-dollar"></i></div><div><div class="label">Today</div><div class="value" th:text="|$${#numbers.formatDecimal(stats.todaySales,1,2)}|"></div></div></div>
+  <div class="stat-tile"><div class="icon-wrap green"><i class="bi bi-graph-up"></i></div><div><div class="label">This month</div><div class="value" th:text="|$${#numbers.formatDecimal(stats.monthSales,1,2)}|"></div></div></div>
+  <div class="stat-tile"><div class="icon-wrap red"><i class="bi bi-exclamation-triangle"></i></div><div><div class="label">Low stock SKUs</div><div class="value" th:text="${stats.lowStockCount}"></div></div></div>
+  <div class="stat-tile"><div class="icon-wrap amber"><i class="bi bi-calendar-x"></i></div><div><div class="label">Expiring batches</div><div class="value" th:text="${stats.expiringSoonCount}"></div></div></div>
+</div>
+<div class="row g-3">
+  <div class="col-lg-6">
+    <div class="panel"><div class="panel-header"><h2>Recent sales</h2></div>
+      <div class="panel-body p-0 table-responsive">
+        <table class="table mb-0"><thead><tr><th>Invoice</th><th>Total</th></tr></thead>
+        <tbody><tr th:each="sale : ${sales}"><td th:text="${sale.invoiceNumber}"></td><td th:text="|$${#numbers.formatDecimal(sale.total,1,2)}|"></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="panel"><div class="panel-header"><h2>Low stock</h2></div>
+      <div class="panel-body p-0 table-responsive">
+        <table class="table mb-0"><thead><tr><th>Product</th><th>Qty</th></tr></thead>
+        <tbody><tr th:each="s : ${stock}" th:if="${s.lowStock}"><td th:text="${s.name}"></td><td><span class="badge badge-pill badge-stock-low" th:text="${s.totalStock}"></span></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+</th:block>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/app-layout :: layout(~{::main})}">
+<body>
+<th:block th:fragment="main">
+<div class="page-header">
+  <div><h1>Stock</h1><p class="lead">Inventory levels, batches, and expiry</p></div>
+  <a class="btn btn-primary-brand" href="/stock/add"><i class="bi bi-plus-lg me-1"></i> Receive stock</a>
+</div>
+
+<div class="row g-3">
+  <div class="col-lg-7">
+    <div class="panel">
+      <div class="panel-header"><h2>Inventory overview</h2></div>
+      <div class="panel-body p-0 table-responsive">
+        <table class="table mb-0">
+          <thead><tr><th>SKU</th><th>Product</th><th>On hand</th><th>Reorder</th><th>Price</th></tr></thead>
+          <tbody>
+            <tr th:each="s : ${overview}">
+              <td><code th:text="${s.sku}"></code></td>
+              <td th:text="${s.name}"></td>
+              <td><span th:class="${s.lowStock ? 'badge badge-pill badge-stock-low' : 'badge badge-pill badge-stock-ok'}" th:text="${s.totalStock}"></span></td>
+              <td th:text="${s.reorderLevel}"></td>
+              <td th:text="${'$' + #numbers.formatDecimal(s.unitPrice,1,2)}"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-5">
+    <div class="panel mb-3">
+      <div class="panel-header"><h2 class="text-warning mb-0"><i class="bi bi-calendar-x me-1"></i> Expiring soon</h2></div>
+      <div class="panel-body p-0">
+        <table class="table mb-0 table-sm">
+          <thead><tr><th>Product</th><th>Expiry</th><th>Qty</th></tr></thead>
+          <tbody>
+            <tr th:each="b : ${expiring}">
+              <td th:text="${b.medicine.name}"></td>
+              <td th:text="${b.expiryDate}"></td>
+              <td th:text="${b.quantity}"></td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(expiring)}"><td colspan="3" class="text-muted text-center py-3">No batches expiring soon</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-header"><h2>Recent batches</h2></div>
+      <div class="panel-body p-0">
+        <table class="table mb-0 table-sm">
+          <thead><tr><th>Batch</th><th>Product</th><th>Qty</th></tr></thead>
+          <tbody>
+            <tr th:each="b, stat : ${batches}" th:if="${stat.index < 8}">
+              <td><code th:text="${b.batchNumber}"></code></td>
+              <td th:text="${b.medicine.name}"></td>
+              <td th:text="${b.quantity}"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+</th:block>
+</body>
+</html>

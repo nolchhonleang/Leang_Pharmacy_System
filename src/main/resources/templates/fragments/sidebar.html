@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+<aside th:fragment="sidebar" class="app-sidebar" id="appSidebar">
+  <div class="sidebar-brand">
+    <div class="brand-row">
+      <div class="brand-logo"><i class="bi bi-capsule-pill"></i></div>
+      <div>
+        <div class="title"><span th:text="${appName}">Leang-Pharmacy-System</span></div>
+        <div class="sub">Pharmacy Management</div>
+      </div>
+    </div>
+  </div>
+  <nav class="flex-grow-1 py-2 overflow-auto">
+    <div class="nav-section">Overview</div>
+    <a class="nav-link" th:classappend="${currentPath == '/dashboard'} ? 'active'" href="/dashboard">
+      <i class="bi bi-grid-1x2-fill"></i> Dashboard
+    </a>
+    <div class="nav-section">Sales</div>
+    <a class="nav-link" th:classappend="${currentPath == '/pos' or #strings.startsWith(currentPath, '/pos/')} ? 'active'" href="/pos">
+      <i class="bi bi-cart-check-fill"></i> Point of Sale
+    </a>
+    <a class="nav-link" th:classappend="${currentPath == '/pos/history'} ? 'active'" href="/pos/history">
+      <i class="bi bi-receipt"></i> Sales History
+    </a>
+    <a class="nav-link" th:classappend="${#strings.startsWith(currentPath, '/prescriptions')} ? 'active'" href="/prescriptions">
+      <i class="bi bi-file-earmark-medical-fill"></i> Prescriptions
+    </a>
+    <a class="nav-link" th:classappend="${#strings.startsWith(currentPath, '/customers')} ? 'active'" href="/customers">
+      <i class="bi bi-people-fill"></i> Customers
+    </a>
+    <div class="nav-section">Inventory</div>
+    <a class="nav-link" th:classappend="${#strings.startsWith(currentPath, '/medicines')} ? 'active'" href="/medicines">
+      <i class="bi bi-box-seam-fill"></i> Medicines
+    </a>
+    <a class="nav-link" th:classappend="${#strings.startsWith(currentPath, '/stock')} ? 'active'" href="/stock">
+      <i class="bi bi-boxes"></i> Stock
+    </a>
+    <a class="nav-link" th:classappend="${#strings.startsWith(currentPath, '/categories')} ? 'active'" href="/categories">
+      <i class="bi bi-tags-fill"></i> Categories
+    </a>
+    <a class="nav-link" th:classappend="${#strings.startsWith(currentPath, '/suppliers')} ? 'active'" href="/suppliers">
+      <i class="bi bi-truck"></i> Suppliers
+    </a>
+    <a class="nav-link" th:classappend="${#strings.startsWith(currentPath, '/purchases')} ? 'active'" href="/purchases">
+      <i class="bi bi-bag-plus-fill"></i> Purchase Orders
+    </a>
+    <div class="nav-section" sec:authorize="hasAnyRole('ADMIN','PHARMACIST')">Insights</div>
+    <a class="nav-link" sec:authorize="hasAnyRole('ADMIN','PHARMACIST')" th:classappend="${#strings.startsWith(currentPath, '/reports')} ? 'active'" href="/reports">
+      <i class="bi bi-bar-chart-fill"></i> Reports
+    </a>
+    <div class="nav-section" sec:authorize="hasRole('ADMIN')">Administration</div>
+    <a class="nav-link" sec:authorize="hasRole('ADMIN')" th:classappend="${#strings.startsWith(currentPath, '/users')} ? 'active'" href="/users">
+      <i class="bi bi-shield-lock-fill"></i> Users
+    </a>
+    <a class="nav-link" sec:authorize="hasRole('ADMIN')" th:classappend="${#strings.startsWith(currentPath, '/audit')} ? 'active'" href="/audit">
+      <i class="bi bi-journal-text"></i> Audit Log
+    </a>
+  </nav>
+  <div class="sidebar-user">
+    <div class="name" th:text="${#authentication.principal.user.fullName}">User</div>
+    <div class="role" th:text="${#strings.replace(#authentication.principal.user.role.name(), 'ROLE_', '')}">Role</div>
+    <form th:action="@{/logout}" method="post" class="mt-2">
+      <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+      <button type="submit" class="btn btn-sm btn-outline-light w-100">
+        <i class="bi bi-box-arrow-right me-1"></i> Sign out
+      </button>
+    </form>
+  </div>
+</aside>
+</body>
+</html>
