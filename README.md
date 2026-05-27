@@ -60,14 +60,14 @@ Add your screenshots to `docs/screenshots/` and keep these filenames:
 
 Then they will render here:
 
-![Login](<img width="1919" height="1011" alt="image" src="https://github.com/user-attachments/assets/db536a62-77c1-4d29-89a8-861b97332c2d" />
-)
-![Dashboard](<img width="1919" height="1005" alt="image" src="https://github.com/user-attachments/assets/db4228f2-db75-4318-bf7c-e27a1f7d4e8e" />
-)
-![POS](<img width="1917" height="1013" alt="image" src="https://github.com/user-attachments/assets/29df81c9-879a-4eac-9fee-387650bcf206" />
-)
-![Inventory](<img width="1919" height="1016" alt="image" src="https://github.com/user-attachments/assets/b4397a7c-d16f-4e23-bd42-d9ee263c9e4a" />
-)
+<img width="1919" height="1011" alt="image" src="https://github.com/user-attachments/assets/db536a62-77c1-4d29-89a8-861b97332c2d" />
+
+<img width="1919" height="1005" alt="image" src="https://github.com/user-attachments/assets/db4228f2-db75-4318-bf7c-e27a1f7d4e8e" />
+
+<img width="1917" height="1013" alt="image" src="https://github.com/user-attachments/assets/29df81c9-879a-4eac-9fee-387650bcf206" />
+
+<img width="1919" height="1016" alt="image" src="https://github.com/user-attachments/assets/b4397a7c-d16f-4e23-bd42-d9ee263c9e4a" />
+
 
 ## Project structure
 
